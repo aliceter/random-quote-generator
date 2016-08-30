@@ -1,3 +1,6 @@
+// Global variable that will hold the time interval for quote change
+var interval;
+
 // event listener to respond to "Show another quote" button clicks
 // when user clicks anywhere on the button, the "printQuote" function is called
 document.getElementById('loadQuote').addEventListener("click", printQuote, false);
@@ -69,6 +72,7 @@ function resetQuotes() {
 function getRandomQuote() {
     // Get the quotes that aren't yet shown
     var unshownQuotes = getUnshownQuotes();
+
     
     // If there aren't any unshown quotes, reset the quotes and get all the
     // quotes
@@ -93,6 +97,12 @@ function getRandomQuote() {
 
 // Prints the quote to the page 
 function printQuote() {
+    // Clear the interval it takes for the quotes to change 
+    // If not cleared then eventually after several clicks
+    // the time of the interval will change because of the
+    // uncleared time
+    clearInterval(interval);
+
     // Gets the random quote
     var quote = getRandomQuote();
 
@@ -129,4 +139,17 @@ function printQuote() {
 
     // The html is placed in the 'quote-box'
     document.getElementById("quote-box").innerHTML = html;
+    // Set a new randomly generated body background color
+    document.body.style.backgroundColor = getRandomColor();
+
+    // Set the desired value of the interval for quotes to change
+    interval = window.setInterval(printQuote, 30000);
 }
+
+// Returns random hex color
+function getRandomColor() {
+    return "#" + Math.random().toString(16).slice(2, 8);
+}
+
+printQuote();
+
