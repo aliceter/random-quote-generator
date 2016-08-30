@@ -47,22 +47,20 @@ var quotes = [
 function getUnshownQuotes() {
     var unshownQuotes = [];
     
-    // Traverses the quotes array in search for quotes that are not yet shown
-    // and pushes then to an array that will be returned
+    // Traverses the quotes array in search  for such quotes
     for (var i = 0; i < quotes.length; i++) {
         if (! quotes[i].hasOwnProperty("shown") || quotes[i].shown === false) {
             unshownQuotes.push(i);
         }
     }
    
-    // Returns the not yet shown quotes 
+    // Returns the indices of the not yet shown quotes 
     return unshownQuotes;
 }
 
 // Resets the shown quotes to unshown 
 function resetQuotes() {
-    // After each quote has been shown we need put each quote's shown property
-    // false, therefore the traversing
+    // Mark all of the quotes as unshown
     for (var i = 0; i < quotes.length; i++) {
         quotes[i].shown = false;
     } 
@@ -70,12 +68,10 @@ function resetQuotes() {
 
 // Selects a random quote object from the quotes array
 function getRandomQuote() {
-    // Get the quotes that aren't yet shown
+    // Get the indices of all unshown quotes
     var unshownQuotes = getUnshownQuotes();
-
     
-    // If there aren't any unshown quotes, reset the quotes and get all the
-    // quotes
+    // If there aren't any unshown quotes -> reset all quotes
     if (unshownQuotes.length === 0) {
         resetQuotes();
         unshownQuotes = getUnshownQuotes();
@@ -86,11 +82,12 @@ function getRandomQuote() {
     // max: unshownQuotes.length - 1, min: 0
     var randomNumber = Math.floor(Math.random() * unshownQuotes.length);
 
-    // Get the actual quote 
+    // Get the quote object
     var quote = quotes[unshownQuotes[randomNumber]];
 
     // Mark the quote as shown
     quote.shown = true;
+
     // Returns the randomly selected quote object
     return quote;
 }
@@ -98,9 +95,8 @@ function getRandomQuote() {
 // Prints the quote to the page 
 function printQuote() {
     // Clear the interval it takes for the quotes to change 
-    // If not cleared then eventually after several clicks
-    // the time of the interval will change because of the
-    // uncleared time
+    // If not cleared then eventually the uncleared time interval 
+    // will cause weird behavior: speeding up, slowing down
     clearInterval(interval);
 
     // Gets the random quote
@@ -111,14 +107,14 @@ function printQuote() {
     html += '</p> <p class="source">';
     html += quote.source;
 
-    // If there's a citation field in the quote it's added to the html
+    // Adds citation span if such field is present in the quote
     if (quote.hasOwnProperty("citation")) {
         html += '<span class="citation">';
         html += quote.citation;
         html += '</span>';
     }
      
-    // If there's a year field in the quote it's added to the html
+    // Adds year span if such field is present in the quote
     if (quote.hasOwnProperty("year")) {
         html += '<span class="year">';
         html += quote.year;
@@ -126,7 +122,7 @@ function printQuote() {
     }
     html += '</p>';
 
-    // If there are tags they are traversed and added to the html 
+    // If there are tags, then they are traversed and added to the html 
     if (quote.hasOwnProperty("tags")) {
         html += '<p class="tags">Tags: ';
         for (var i = 0; i < quote["tags"].length; i++) {
@@ -139,6 +135,7 @@ function printQuote() {
 
     // The html is placed in the 'quote-box'
     document.getElementById("quote-box").innerHTML = html;
+
     // Set a new randomly generated body background color
     document.body.style.backgroundColor = getRandomColor();
 
