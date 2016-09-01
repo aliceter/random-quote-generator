@@ -1,4 +1,6 @@
 +function() {
+    'use strict';
+
     // Global variable that will hold the time interval for quote change
     var interval;
     
@@ -126,7 +128,7 @@
         // If there are tags, then they are traversed and added to the html 
         if (quote.hasOwnProperty("tags")) {
             html += '<p class="tags">Tags: ';
-            for (var i = 0; i < quote["tags"].length; i++) {
+            for (var i = 0; i < quote.tags.length; i++) {
                 html += '<span class="tag">';
                 html += quote.tags[i];
                 html += '</span>';
